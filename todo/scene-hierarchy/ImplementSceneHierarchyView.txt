@@ -1,0 +1,7 @@
+
+----------------------------
+
+-> Display added entities on a tree view.
+---> Tree item roots: BLUEFORCE REDFORCE PATHS WAYPOINTS
+---> Tree leaf structure: <icon-callsign-editIcon>
+------> On editIcon clicked display a dialog with text edit which can be set callsign.
