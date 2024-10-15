@@ -3,7 +3,8 @@ import { FixedWingType, Affiliation } from "../types/entity";
 
 class FixedWing extends MilitaryEntity 
 {
-    type: FixedWingType;
+    
+    private mType: FixedWingType;
 
     constructor(
         id: string, 
@@ -11,22 +12,43 @@ class FixedWing extends MilitaryEntity
         type: FixedWingType,
         symbolicIdentificationCode: string,
         affiliation: Affiliation = Affiliation.Friend,
+        maxSpeed: number = 0,
+        weight: number = 0,
         description?: string,
-        position: [number, number] = [0, 0],
     ) {
         super(
             id, 
             name, 
             symbolicIdentificationCode, 
-            position, 
             affiliation,
-            description
+            maxSpeed,
+            weight,
+            description,
         );
-        this.type = type;
+        this.mType = type;
+    }
+
+    public getFuel?: (() => number) | undefined = () => { return this.mFuel };
+    public setFuel?: ((newFuel: number) => void) | undefined = (newFuel: number) => { return this.mFuel = newFuel; };
+
+    public getTypeName?: (() => string) | undefined = () => { return "Fixed Wing"; }
+    public getSubTypeName?: (() => string) | undefined = () => { return this.subTypeName(); }
+
+    public clone(): MilitaryEntity {
+        return new FixedWing(
+            this.mID,
+            this.mName,
+            this.mType,
+            this.mSymbolicIdentificationCode,
+            this.mAffiliation,
+            this.mMaxSpeed,
+            this.mWeight,
+            this.mDescription
+        )
     }
 
     public subTypeName(): string {
-        switch (this.type) {
+        switch (this.mType) {
             case FixedWingType.Attacker:
                 return "Attacker";
             case FixedWingType.Bomber:

@@ -11,11 +11,11 @@ const MapManager: React.FC = () => {
     const applicationState = useApplicationStateContext();
     const mapElements = useMapElementsContext();
 
-    const handleMouseMove: LeafletMouseEventHandlerFn = (_event: LeafletMouseEvent) => {
-        /*if (applicationState.addWaypointState.active) {
+    /*const handleMouseMove: LeafletMouseEventHandlerFn = (_event: LeafletMouseEvent) => {
+        if (applicationState.addWaypointState.active) {
             applicationState.setAddWaypointState({ active: true });
-        }*/
-    };
+        }
+    };*/
 
     const handleClick: LeafletMouseEventHandlerFn = (event: LeafletMouseEvent) => {
         if (applicationState.addWaypointState.active) {
@@ -28,7 +28,7 @@ const MapManager: React.FC = () => {
         if (applicationState.definePathState.active) {
             if (!applicationState.definePathState.targetPath) throw new Error("Invalid Path object.");
             applicationState.definePathState.targetPath.addPoint([event.latlng.lat, event.latlng.lng]);
-            mapElements.updateRenderable(applicationState.definePathState.targetPath.mapID(undefined), applicationState.definePathState.targetPath);
+            mapElements.updateRenderable(applicationState.definePathState.targetPath.mapID(), applicationState.definePathState.targetPath);
         }
     };
 
@@ -40,7 +40,7 @@ const MapManager: React.FC = () => {
     }
 
     useMapEvent("click", handleClick);
-    useMapEvent("mousemove", handleMouseMove);
+    // useMapEvent("mousemove", handleMouseMove);
     useMapEvent("contextmenu", handleRightClick);
 
     return <></>

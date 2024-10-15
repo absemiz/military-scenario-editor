@@ -38,7 +38,7 @@ class MilitarySymbolFactory
         return this.defaultUnknownSymbolComponent;
     } 
 
-    public createLeafletIcon(symbolIdentificationCode: string, size: number = 32): Icon {
+    public createLeafletIcon(symbolIdentificationCode: string, size: number = 36): Icon {
         const leafletIconOptions: IconOptions = {
             iconUrl: this.createSVGSymbolURL(symbolIdentificationCode, size),
             iconSize: [size, size]

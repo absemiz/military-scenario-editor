@@ -24,13 +24,13 @@ const AssetDescription: React.FC<AssetDescriptionProperties> = (properties: Asse
             <CardHeader
                 titleTypographyProps={{ variant: 'h6', color: 'white' }}
                 subheaderTypographyProps={{ variant: 'body2', color: 'gray' }}
-                title={properties.item.label}
-                subheader={properties.item.subTypeName && properties.item.subTypeName()}
+                title={properties.item.getAssetTreeLabel()}
+                subheader={properties.item.getSubTypeName && properties.item.getSubTypeName()}
                 sx={{ paddingBottom: '8px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}
             />
             <CardContent sx={{ padding: '16px' }}>
                 <Typography variant="body2" style={{ color: 'lightgray', lineHeight: '1.6' }}>
-                    {properties.item.description || "No description available."}
+                    { properties.item.getDescription ? properties.item.getDescription() : "Description unavailable." }
                 </Typography>
             </CardContent>
         </Card>

@@ -3,7 +3,7 @@ import { ArmoredFightingVehicleType, Affiliation } from "../types/entity";
 
 class ArmoredFightingVehicle extends MilitaryEntity 
 {
-    type: ArmoredFightingVehicleType;
+    private mType: ArmoredFightingVehicleType;
 
     constructor(
         id: string, 
@@ -11,23 +11,43 @@ class ArmoredFightingVehicle extends MilitaryEntity
         type: ArmoredFightingVehicleType,
         symbolicIdentificationCode: string,
         affiliation: Affiliation = Affiliation.Friend,
+        maxSpeed: number = 0,
+        weight: number = 0,
         description?: string,
-        position: [number, number] = [0, 0],
-        
     ) {
         super(
             id, 
             name, 
             symbolicIdentificationCode, 
-            position, 
             affiliation,
-            description
+            maxSpeed,
+            weight,
+            description,
         );
-        this.type = type;
+        this.mType = type;
+    }
+    
+    public clone(): MilitaryEntity {
+        return new ArmoredFightingVehicle(
+            this.mID,
+            this.mName,
+            this.mType,
+            this.mSymbolicIdentificationCode,
+            this.mAffiliation,
+            this.mMaxSpeed,
+            this.mWeight,
+            this.mDescription
+        )
     }
 
+    public getFuel?: (() => number) | undefined = () => { return this.mFuel };
+    public setFuel?: ((newFuel: number) => void) | undefined = (newFuel: number) => { return this.mFuel = newFuel; };
+
+    public getTypeName?: (() => string) | undefined = () => { return "Armored Fighting Vehicle"; }
+    public getSubTypeName?: (() => string) | undefined = () => { return this.subTypeName(); }
+
     public subTypeName(): string {
-        switch (this.type) {
+        switch (this.mType) {
             case ArmoredFightingVehicleType.MainBattleTank:
                 return "Main Battle Tank";
             case ArmoredFightingVehicleType.LightTank:

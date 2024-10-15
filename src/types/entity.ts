@@ -1,6 +1,7 @@
 import { Icon } from "leaflet";
 
-export enum Affiliation {
+export enum Affiliation 
+{
     Friend = 3,
     Hostile = 6,
     Unknown = 1,
@@ -8,22 +9,57 @@ export enum Affiliation {
     Any = -1
 };
 
-export interface IEntity {
-    id: string;
-    name: string;
-    position: [number, number];
+export interface IEntity
+{
+    getEntityID: () => string;
+    getEntityName: () => string;
+    getEntityCallsign: () => string;
 };
 
-export interface IMilitaryEntity extends IEntity {
-    affiliation: Affiliation;
-    symbolicIdentificationCode: string;
+export interface IMilitaryEntity extends IEntity 
+{
+    getAffiliation: () => Affiliation;
+    getSymbolicIdentificationCode: () => string;
+    getTypeName?: () => string;
+    getSubTypeName?: () => string;
 };
 
-export interface IMarkerEntity extends IEntity { icon: Icon; }
+export interface IMarkerEntity extends IEntity 
+{ 
+    icon: Icon; 
+}
 
-export interface IFixedWing extends IMilitaryEntity {}
+export interface IFixedWing extends IMilitaryEntity 
+{
 
-export enum FixedWingType {
+}
+
+export interface IEntityPosition 
+{
+    getLatitude: () => number;
+    getLongitude: () => number;
+    getAltitude: () => number;
+    getHeading: () => number;
+    getPitch: () => number;
+    getRoll: () => number;
+
+    setLatitude: (newLatitude: number) => void;
+    setLongitude: (newLongitude: number) => void;
+    setAltitude: (newAltitude: number) => void;
+    setHeading: (newHeading: number) => void;
+}
+
+export interface IEntityPlatform
+{
+    getFuel?: () => number;
+    getMaxSpeed: () => number;
+    getWeight: () => number;
+
+    setFuel?: (newFuel: number) => void;
+}
+
+export enum FixedWingType 
+{
     Fighter,
     Bomber,
     Attacker,
@@ -34,7 +70,8 @@ export enum FixedWingType {
     UAV
 };
 
-export enum ArmoredFightingVehicleType {
+export enum ArmoredFightingVehicleType 
+{
     MainBattleTank,
     LightTank,
     InfantryFightingVehicle,
@@ -42,7 +79,8 @@ export enum ArmoredFightingVehicleType {
     TankDestroyer
 };
 
-export enum RotaryWingType {
+export enum RotaryWingType 
+{
     Attack,
     Utility,
     Transport,
@@ -54,7 +92,8 @@ export enum RotaryWingType {
     UAV
 };
 
-export enum InfantryType {
+export enum InfantryType 
+{
     Rifleman,                  
     MechanizedInfantry,         
     MotorizedInfantry,          

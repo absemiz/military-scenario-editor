@@ -30,18 +30,22 @@ const AssetTreeItem: React.FC<AssetTreeItemProperties> = (properties: AssetTreeI
     
     const handleAssetItemDragEnd = (event: React.DragEvent<HTMLLIElement>) => {
         const position: LatLng = map.containerPointToLatLng([event.clientX, event.clientY]);
-        const entity: MilitaryEntity = MilitaryEntitiesDataService.getInstance().getEntityCopy(properties.item.id);
-        entity.setPosition([position.lat, position.lng]);
+        const entity: MilitaryEntity = MilitaryEntitiesDataService.getInstance().getEntityCopy(properties.item.getAssetTreeItemID());
+        entity.setLatitude(position.lat);
+        entity.setLongitude(position.lng);
 
         mapElements.addRenderable(entity);
 
         applicationState.setDisplayRepositioningInfo(true);
         setTimeout(() => { applicationState.setDisplayRepositioningInfo(false); }, 5000);
-    
+
+        applicationState.setEntityIDToDisplayAttributes(entity.mapID());
+
         event.stopPropagation();
         map.dragging.enable();
+        
     }
-    return <TreeItem draggable={true} onDragStart={handleAssetItemDragStart} onDragEnd={handleAssetItemDragEnd} itemId={properties.item.id} label={properties.item.label} slots={{ icon: properties.item.treeIcon }}></TreeItem>;
+    return <TreeItem draggable={true} onDragStart={handleAssetItemDragStart} onDragEnd={handleAssetItemDragEnd} itemId={properties.item.getAssetTreeItemID()} label={properties.item.getAssetTreeLabel()} slots={{ icon: properties.item.getAssetTreeIcon }}></TreeItem>;
 }
 
 export default AssetTreeItem;

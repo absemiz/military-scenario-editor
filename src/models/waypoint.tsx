@@ -9,44 +9,68 @@ import { IAssetTreeItem } from "../types/asset-browser";
 class Waypoint implements IMapRenderable, IAssetTreeItem {
     private static instanceCounter: number = 0;
 
-    public id: string;
-    private position: [number, number] = [0, 0];
-    private key: number;
-    description?: string | undefined;
+    private mID: string;
+    private mLabel: string;
+    private mPosition: [number, number] = [0, 0];
+    private mKey: number;
     
-    label: string;
-    treeChildren: IAssetTreeItem[];
 
     public constructor(position: [number, number] = [0, 0]) {
-        this.id = `waypoint-${Waypoint.instanceCounter.toString()}`;
-        this.position = position;
-        this.label = `Waypoint-${Waypoint.instanceCounter}`;
-        this.treeChildren = [];
-        this.key = Waypoint.instanceCounter;
+        this.mID = `waypoint-${Waypoint.instanceCounter.toString()}`;
+        this.mPosition = position;
+        this.mLabel = `Waypoint-${Waypoint.instanceCounter}`;
+        this.mKey = Waypoint.instanceCounter;
 
         Waypoint.instanceCounter++;
     }
+
+    public getAssetTreeItemID(): string
+    {
+        return this.mID;
+    }
+
+    public getAssetTreeLabel(): string
+    {
+        return this.mLabel;
+    }
+
+    public getAssetTreeChildren(): IAssetTreeItem[]
+    {
+        return [];
+    }
+   
+    public getDescription?: (() => string) | undefined = undefined;
+
+    public getSubTypeName?: (() => string) | undefined = undefined;
         
-    public treeIcon(): React.JSX.Element {
+    public getAssetTreeIcon(): React.JSX.Element 
+    {
         return <LocationOnOutlined />
     }
 
-    subTypeName?: (() => string) | undefined;
-
-    public setPosition(newPosition: [number, number]): void {
-        this.position = newPosition;
+    public setPosition(newPosition: [number, number]): void 
+    {
+        this.mPosition = newPosition;
     }
 
-    public mapID(_index: number | undefined): string {
-        return this.id;
+    public mapID(_index: number | undefined): string 
+    {
+        return this.mID;
     }
-    public mapPosition(): [number, number] { return this.position; }
-    public mapComponent(): React.JSX.Element {
+
+    public mapPosition(): [number, number] 
+    { 
+        return this.mPosition; 
+    }
+
+    public mapComponent(): React.JSX.Element 
+    {
         return <WaypointView waypoint={this}/>;
     }
 
-    public getKey(): number {
-        return this.key;
+    public getKey(): number 
+    {
+        return this.mKey;
     }
 }
 

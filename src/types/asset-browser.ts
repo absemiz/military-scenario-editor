@@ -1,10 +1,11 @@
 import React from "react";
 
-export interface IAssetTreeItem {
-    id: string;
-    label: string;
-    treeChildren: IAssetTreeItem[];
-    treeIcon: () => React.JSX.Element;
-    description?: string;
-    subTypeName? : () => string;
+export interface IAssetTreeItem 
+{
+    getAssetTreeItemID: () => string;
+    getAssetTreeLabel: () => string;
+    getAssetTreeChildren: () => IAssetTreeItem[];
+    getAssetTreeIcon: () => React.JSX.Element;
+    getDescription?: () => string;
+    getSubTypeName?: () => string;
 }

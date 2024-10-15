@@ -4,6 +4,8 @@ import { ToggleButtonGroup } from "@mui/material";
 
 import AddWaypointButton from "./AddWaypointButton";
 import DefinePathButton from "./DefinePathButton";
+import SelectButton from "./SelectButton";
+import MoveButton from "./MoveButton";
 
 import Path from "../../models/path";
 
@@ -40,21 +42,30 @@ const selectedActionButtonStyle: React.CSSProperties = {
 
 export enum ActionButtonKind {
     AddWaypoint,
-    DefinePath
+    DefinePath,
+    Select,
+    Move
 }
 
 const ActionButtons: React.FC = () => {
     const applicationState = useApplicationStateContext();
     const mapElements = useMapElementsContext();
 
-    const [selected, setSelected] = useState<ActionButtonKind | null>(null);
+    const [selected, setSelected] = useState<ActionButtonKind | null>(ActionButtonKind.Select);
 
     const handleChange = (
         event: React.MouseEvent<HTMLElement>,
         buttonKind: ActionButtonKind | null
     ) => {
+        if (buttonKind !== null)
+        {
+            if (buttonKind !== ActionButtonKind.Move) 
+            {
+                applicationState.setMovingEnabled(false);
+            }
             setSelected(buttonKind);
             event.stopPropagation();
+        } 
     };
 
     const handleMouseEnter = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -65,6 +76,12 @@ const ActionButtons: React.FC = () => {
 
     const handleMouseLeave = (event: React.MouseEvent<HTMLDivElement>) => {
         switch (selected) {
+            case ActionButtonKind.Select:
+                applicationState.setSelectionEnabled(true);
+                break;
+            case ActionButtonKind.Move:
+                applicationState.setMovingEnabled(true);
+                break;
             case ActionButtonKind.AddWaypoint:
                 applicationState.setAddWaypointState({ active: true });
                 break;
@@ -83,6 +100,8 @@ const ActionButtons: React.FC = () => {
     useEffect(() => { if (selected === ActionButtonKind.DefinePath && !applicationState.definePathState.active) setSelected(null); }, [applicationState.definePathState.active]);
 
     return <ToggleButtonGroup exclusive={true} value={selected} onChange={handleChange} style={actionButtonsContainerStyle} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <SelectButton style={selected === ActionButtonKind.Select ? selectedActionButtonStyle : actionButtonStyle}/>
+        <MoveButton style={selected === ActionButtonKind.Move ? selectedActionButtonStyle : actionButtonStyle}/>
         <AddWaypointButton style={selected === ActionButtonKind.AddWaypoint ? selectedActionButtonStyle : actionButtonStyle}/>
         <DefinePathButton style={selected === ActionButtonKind.DefinePath ? selectedActionButtonStyle : actionButtonStyle} />
     </ToggleButtonGroup>

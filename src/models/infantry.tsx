@@ -3,7 +3,7 @@ import { InfantryType, Affiliation } from "../types/entity";
 
 class Infantry extends MilitaryEntity 
 {
-    type: InfantryType;
+    private mType: InfantryType;
 
     constructor(
         id: string, 
@@ -11,22 +11,43 @@ class Infantry extends MilitaryEntity
         type: InfantryType,
         symbolicIdentificationCode: string,
         affiliation: Affiliation = Affiliation.Friend,
+        maxSpeed: number = 0,
+        weight: number = 0,
         description?: string,
-        position: [number, number] = [0, 0],
     ) {
         super(
             id, 
             name, 
             symbolicIdentificationCode, 
-            position, 
-            affiliation, 
+            affiliation,
+            maxSpeed,
+            weight,
             description
         );
-        this.type = type;
+        this.mType = type;
+    }
+    
+    public getTypeName?: (() => string) | undefined = () => { return "Infantry"; }
+    public getSubTypeName?: (() => string) | undefined = () => { return this.subTypeName(); }
+
+    public clone(): MilitaryEntity {
+        return new Infantry(
+            this.mID,
+            this.mName,
+            this.mType,
+            this.mSymbolicIdentificationCode,
+            this.mAffiliation,
+            this.mMaxSpeed,
+            this.mWeight,
+            this.mDescription
+        )
     }
 
+    public getFuel?: (() => number) | undefined = undefined;
+    public setFuel?: ((newFuel: number) => void) | undefined = undefined;
+
     public subTypeName(): string {
-        switch (this.type) {
+        switch (this.mType) {
             case InfantryType.Rifleman:
                 return "Rifleman";
             case InfantryType.MechanizedInfantry:

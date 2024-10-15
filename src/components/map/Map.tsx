@@ -31,7 +31,7 @@ const Map: React.FC = () => {
     if (!mapElementsContext) throw new Error("Null mapElementsOnContext");
 
     const renderables: IMapRenderable[] = mapElementsContext.renderables;
-
+    
     return (
       <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={true} doubleClickZoom={false} zoomControl={false}>
         <MapManager />

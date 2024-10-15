@@ -19,7 +19,7 @@ class Path implements IMapRenderable {
         this.points.push(point);
     }
 
-    public mapID(_index: number | undefined): string {
+    public mapID(_index?: number): string {
         return this.id;
     }
 

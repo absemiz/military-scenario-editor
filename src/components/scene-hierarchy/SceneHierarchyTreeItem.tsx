@@ -2,17 +2,15 @@ import React from "react";
 
 import { TreeItem } from "@mui/x-tree-view";
 
-import { IAssetTreeItem } from "../../types/asset-browser";
-import MilitaryEntity from "../../models/military-entity";
+import { ISceneHierarchyTreeItem } from "../../types/scene-hierarchy";
 
 interface SceneHierarchyTreeItemProperties {
-    item: IAssetTreeItem
+    item: ISceneHierarchyTreeItem
+    onClick?: React.MouseEventHandler<HTMLLIElement> | undefined
 };
 
 const SceneHierarchyTreeItem: React.FC<SceneHierarchyTreeItemProperties> = (properties: SceneHierarchyTreeItemProperties) => {
-    console.log(`${properties.item.id}-${properties.item instanceof MilitaryEntity}`)
-
-    return <TreeItem itemId={`${properties.item.id}`} label={properties.item instanceof MilitaryEntity ? (properties.item.getCallsign()) : properties.item.label} slots={{icon: properties.item.treeIcon}}> </TreeItem>
+    return <TreeItem onClick={properties.onClick} itemId={`${properties.item.getHierarchyTreeItemID()}`} label={properties.item.getHierarchyTreeLabel()} slots={{icon: properties.item.getHierarchyTreeIcon}}> </TreeItem>
 };
 
 export default SceneHierarchyTreeItem;

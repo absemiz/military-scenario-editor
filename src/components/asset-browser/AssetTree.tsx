@@ -60,9 +60,9 @@ const AssetTree: React.FC<AssetTreeProperties> = (properties: AssetTreePropertie
         <SimpleTreeView onItemClick={handleItemClick}>
             { 
                 assetTree.map((value: IAssetTreeItem, index: number) => (
-                    <TreeItem itemId={value.id} label={value.label} key={index} slots={{icon: value.treeIcon}}>
+                    <TreeItem itemId={value.getAssetTreeItemID()} label={value.getAssetTreeLabel()} key={index} slots={{icon: value.getAssetTreeIcon}}>
                         { 
-                            value.treeChildren.map((child: IAssetTreeItem, childIndex: number) => (
+                            value.getAssetTreeChildren().map((child: IAssetTreeItem, childIndex: number) => (
                                 <AssetTreeItem item={child} key={childIndex} />
                             ))
                         }

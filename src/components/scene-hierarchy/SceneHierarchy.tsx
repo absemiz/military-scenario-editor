@@ -2,6 +2,10 @@ import React from "react";
 
 import SceneHierarchyTree from "./SceneHierarchyTree";
 
+import SelectedEntityAttributes from "./SelectedEntityAttributes";
+import { useApplicationStateContext } from "../../hooks/useApplicationStateContext";
+import { useMap } from "react-leaflet";
+
 const sceneHierarchyContainerStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
@@ -32,9 +36,23 @@ const sceneHierarchyHeaderStyle: React.CSSProperties = {
 }
 
 const SceneHierarchy: React.FC = () => {
-    return <div style={sceneHierarchyContainerStyle}>
+    const applicationContext = useApplicationStateContext();
+    const map = useMap();
+
+    const handleMouseEnter: React.MouseEventHandler<HTMLDivElement> = (_event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        map.scrollWheelZoom.disable();
+        map.dragging.disable();
+    }
+
+    const handleMouseLeave: React.MouseEventHandler<HTMLDivElement> = (_event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        map.scrollWheelZoom.enable();
+        map.dragging.enable();
+    }
+
+    return <div style={sceneHierarchyContainerStyle} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
         <h2 style={sceneHierarchyHeaderStyle}>Scene Hierarchy</h2>
-        <SceneHierarchyTree />
+        <SceneHierarchyTree setLastSelectedItemID={applicationContext.setEntityIDToDisplayAttributes} />
+        { applicationContext.entityIDToDisplayAttributes && <SelectedEntityAttributes /> }
     </div>
 }
 
