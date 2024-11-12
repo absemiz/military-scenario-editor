@@ -8,6 +8,8 @@ import AssetDescription from "./AssetDescription";
 
 import MilitaryEntitiesDataService from "../../data/entities-data";
 
+import { useMap } from "react-leaflet";
+
 const assetBrowserStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
@@ -44,8 +46,22 @@ const dividerStyle: React.CSSProperties = {
 }
 
 const AssetBrowser: React.FC = () => {
+    const map = useMap();
+
+    const handleAssetBrowserEnter: React.MouseEventHandler<HTMLDivElement> = (event) => {
+        map.scrollWheelZoom.disable();
+        map.dragging.disable();
+        event.stopPropagation();
+    };
+
+    const handleAssetBrowserLeave: React.MouseEventHandler<HTMLDivElement> = (event) => {
+        map.scrollWheelZoom.enable();
+        map.dragging.enable();
+        event.stopPropagation();
+    }
+
     const [lastSelectedAssetID, setLastSelectedItemID] = React.useState<string | null>(null);
-    return <div style={assetBrowserStyle}>
+    return <div style={assetBrowserStyle} onMouseEnter={handleAssetBrowserEnter} onMouseLeave={handleAssetBrowserLeave}>
         <h2 style={assetBrowserHeaderStyle}>Assets</h2>
         <AffiliationSelection />
         <Divider flexItem={true} sx={dividerStyle}/>

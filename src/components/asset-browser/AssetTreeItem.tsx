@@ -23,9 +23,22 @@ const AssetTreeItem: React.FC<AssetTreeItemProperties> = (properties: AssetTreeI
     const mapElements = useMapElementsContext();
     const applicationState = useApplicationStateContext();
 
-    const handleAssetItemDragStart = (event: React.DragEvent<HTMLLIElement>) => {
-        map.dragging.disable();
-        event.stopPropagation();
+    const handleAssetItemDragStart = (_: React.DragEvent<HTMLLIElement>) => {
+    }
+
+    const handleRightClick = () => {
+        const position: LatLng = map.getCenter();
+        const entity: MilitaryEntity = MilitaryEntitiesDataService.getInstance().getEntityCopy(properties.item.getAssetTreeItemID());
+        
+        entity.setLatitude(position.lat);
+        entity.setLongitude(position.lng);
+
+        mapElements.addRenderable(entity);
+
+        applicationState.setDisplayRepositioningInfo(true);
+        setTimeout(() => { applicationState.setDisplayRepositioningInfo(false); }, 5000);
+
+        applicationState.setEntityIDToDisplayAttributes(entity.mapID());
     }
     
     const handleAssetItemDragEnd = (event: React.DragEvent<HTMLLIElement>) => {
@@ -41,11 +54,10 @@ const AssetTreeItem: React.FC<AssetTreeItemProperties> = (properties: AssetTreeI
 
         applicationState.setEntityIDToDisplayAttributes(entity.mapID());
 
-        event.stopPropagation();
         map.dragging.enable();
-        
+        event.stopPropagation();
     }
-    return <TreeItem draggable={true} onDragStart={handleAssetItemDragStart} onDragEnd={handleAssetItemDragEnd} itemId={properties.item.getAssetTreeItemID()} label={properties.item.getAssetTreeLabel()} slots={{ icon: properties.item.getAssetTreeIcon }}></TreeItem>;
+    return <TreeItem draggable={true} onContextMenuCapture={handleRightClick} onDragStartCapture={handleAssetItemDragStart} onDragEndCapture={handleAssetItemDragEnd} itemId={properties.item.getAssetTreeItemID()} label={properties.item.getAssetTreeLabel()} slots={{ icon: properties.item.getAssetTreeIcon }}></TreeItem>;
 }
 
 export default AssetTreeItem;

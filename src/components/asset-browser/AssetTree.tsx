@@ -3,8 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import { SimpleTreeView, TreeItem } from "@mui/x-tree-view";
 
-import { useMap } from "react-leaflet";
-
 import { IAssetTreeItem } from "../../types/asset-browser";
 import MilitaryEntitiesDataService from "../../data/entities-data";
 import { useApplicationStateContext } from "../../hooks/useApplicationStateContext";
@@ -31,18 +29,6 @@ const AssetTree: React.FC<AssetTreeProperties> = (properties: AssetTreePropertie
     const applicationState: ApplicationState = useApplicationStateContext();
     const [assetTree, setAssetTree] = useState(militaryEntitiesDataService.treeOf(applicationState.selectedAffiliation));
 
-    const map = useMap();
-
-    const handleTreeContainerEnter = (event: React.MouseEvent) => {
-        map.scrollWheelZoom.disable();
-        event.stopPropagation();
-    }
-
-    const handleTreeContainerExit = (event: React.MouseEvent) => {
-        map.scrollWheelZoom.enable();
-        event.stopPropagation();
-    }
-
     useEffect(
         () => { 
             const newTree = militaryEntitiesDataService.treeOf(applicationState.selectedAffiliation);
@@ -56,7 +42,7 @@ const AssetTree: React.FC<AssetTreeProperties> = (properties: AssetTreePropertie
         event.stopPropagation();
     }
 
-    return <Box sx={assetTreeContainerStyle} onMouseEnter={handleTreeContainerEnter} onMouseLeave={handleTreeContainerExit}>
+    return <Box sx={assetTreeContainerStyle}>
         <SimpleTreeView onItemClick={handleItemClick}>
             { 
                 assetTree.map((value: IAssetTreeItem, index: number) => (
@@ -72,6 +58,5 @@ const AssetTree: React.FC<AssetTreeProperties> = (properties: AssetTreePropertie
         </SimpleTreeView>
     </Box>;
 }
-
 
 export default AssetTree;

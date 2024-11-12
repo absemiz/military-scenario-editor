@@ -6,11 +6,16 @@ import AddWaypointButton from "./AddWaypointButton";
 import DefinePathButton from "./DefinePathButton";
 import SelectButton from "./SelectButton";
 import MoveButton from "./MoveButton";
+import RunButton from "./RunButton";
 
 import Path from "../../models/path";
 
 import { useApplicationStateContext } from "../../hooks/useApplicationStateContext";
 import { useMapElementsContext } from "../../hooks/useMapElementsContext";
+
+import { IMapRenderable } from "../../types/map";
+import MilitaryEntity from "../../models/military-entity";
+import Waypoint from "../../models/waypoint";
 
 const actionButtonsContainerStyle: React.CSSProperties =  {
     position: "absolute",
@@ -24,6 +29,7 @@ const actionButtonsContainerStyle: React.CSSProperties =  {
     boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.5)",
     padding: "5px"
 };
+
 const actionButtonStyle: React.CSSProperties = {
     padding: "8px",
     color: "#1DB954",
@@ -38,14 +44,15 @@ const selectedActionButtonStyle: React.CSSProperties = {
     boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.3)",
     transition: "background-color 0.3s, color 0.3s",
     fontWeight: 600,
-}
+};
 
 export enum ActionButtonKind {
     AddWaypoint,
     DefinePath,
     Select,
-    Move
-}
+    Move,
+    Run,
+};
 
 const ActionButtons: React.FC = () => {
     const applicationState = useApplicationStateContext();
@@ -90,6 +97,41 @@ const ActionButtons: React.FC = () => {
                 mapElements.addRenderable(targetPath);
                 applicationState.setDefinePathState({ active: true, targetPath: targetPath })
                 break;
+            case ActionButtonKind.Run:
+                const filterOf = (mapIDPreamble: string) => {
+                    return function (mapRenderable: IMapRenderable) {
+                        return mapRenderable.mapID().startsWith(mapIDPreamble);
+                    };
+                }
+
+                const militaryEntities: MilitaryEntity[] = mapElements.renderables.filter(filterOf('milentity')) as MilitaryEntity[];
+                const paths: Path[] = mapElements.renderables.filter(filterOf('path')) as Path[];
+                const waypoints: Waypoint[] = mapElements.renderables.filter(filterOf('waypoint')) as Waypoint[];
+
+                const initializationMessage = {
+                    entities: militaryEntities.map((value: MilitaryEntity) => value.asJSON()),
+                    paths: paths.map((value: Path) => value.asJSON()),
+                    waypoints: waypoints.map((value: Waypoint) => value.asJSON())
+                };
+
+                console.log(JSON.stringify(initializationMessage));
+
+                fetch(
+                    'http://localhost:8080/milsimapi',
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Message-Kind': 'scenario/initialize',
+                        },
+                        body: JSON.stringify(initializationMessage)
+                    }
+                )
+                .then((response => response.json()))
+                .then(responseData => console.log(responseData))
+                .catch(error => console.log(error));
+
+                break;
             default:
                 break;
         }
@@ -104,6 +146,7 @@ const ActionButtons: React.FC = () => {
         <MoveButton style={selected === ActionButtonKind.Move ? selectedActionButtonStyle : actionButtonStyle}/>
         <AddWaypointButton style={selected === ActionButtonKind.AddWaypoint ? selectedActionButtonStyle : actionButtonStyle}/>
         <DefinePathButton style={selected === ActionButtonKind.DefinePath ? selectedActionButtonStyle : actionButtonStyle} />
+        <RunButton style={selected === ActionButtonKind.Run ? selectedActionButtonStyle : actionButtonStyle}></RunButton>
     </ToggleButtonGroup>
 }
 

@@ -60,6 +60,21 @@ abstract class MilitaryEntity implements IEntityPosition, IEntityPlatform, IMili
         MilitaryEntity.callsignCounter++;
     }
 
+    public asJSON(): Object
+    {
+        return {
+            id: this.mID,
+            latitude: this.mLatitude,
+            longitude: this.mLongitude,
+            altitude: this.mAltitude,
+            heading: this.mHeading,
+            pitch: this.mPitch,
+            roll: this.mRoll,
+            fuel: this.mFuel,
+            affiliation: this.mAffiliation
+        };
+    }
+
     public getHierarchyTreeItemID(): string
     {
         return this.mapID();
@@ -188,7 +203,7 @@ abstract class MilitaryEntity implements IEntityPosition, IEntityPlatform, IMili
         {
             this.mMapIndex = index;
         }
-        return `${this.mID}-${this.mMapIndex.toString()}`;
+        return `milentity-${this.mID}-${this.mMapIndex.toString()}`;
     }
 
     public mapPosition(): [number, number] 
@@ -207,6 +222,7 @@ abstract class MilitaryEntity implements IEntityPosition, IEntityPlatform, IMili
     {
         return this.mMaxSpeed;
     }
+
     public getWeight(): number
     {
         return this.mWeight;

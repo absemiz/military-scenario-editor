@@ -24,6 +24,14 @@ class Waypoint implements IMapRenderable, IAssetTreeItem {
         Waypoint.instanceCounter++;
     }
 
+    public asJSON(): Object
+    {
+        return {
+            id: this.mID,
+            position: this.mPosition
+        };
+    }
+
     public getAssetTreeItemID(): string
     {
         return this.mID;
