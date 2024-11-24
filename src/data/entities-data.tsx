@@ -36,7 +36,7 @@ const MilitaryEntitiesData: MilitaryEntity[] = [
     new FixedWing('Orion', 'Orion UAV', FixedWingType.UAV, '30060100001101100000', Affiliation.Hostile, 500, 3200, "A Russian long-endurance UAV used for surveillance and reconnaissance."),
 
     new RotaryWing('AH-64', 'AH-64 Apache', RotaryWingType.Attack, '30030100001102000000', Affiliation.Friend, 300, 11000, "A highly advanced and powerful attack helicopter used for close air support."),
-    new RotaryWing('EurocopterTiger', 'Eurocopter Tiger', RotaryWingType.Attack, '30030100001102000000', Affiliation.Friend, 300, 6500, "A modern European attack helicopter designed for anti-tank and combat missions."),
+    new RotaryWing('Eurocopter-Tiger', 'Eurocopter Tiger', RotaryWingType.Attack, '30030100001102000000', Affiliation.Friend, 300, 6500, "A modern European attack helicopter designed for anti-tank and combat missions."),
     new RotaryWing('Ka-52', 'Kamov Ka-52 Alligator', RotaryWingType.Attack, '30060100001102000000', Affiliation.Hostile, 300, 11500, "A Russian twin-seat attack helicopter designed for all-weather operations."),
     new RotaryWing('Mi-28', 'Mil Mi-28 Havoc', RotaryWingType.Attack, '30060100001102000000', Affiliation.Hostile, 300, 13000, "A Russian attack helicopter designed for tank destruction and battlefield support."),
     new RotaryWing('CH-47', 'Boeing CH-47 Chinook', RotaryWingType.Transport, '30030100001102000000', Affiliation.Friend, 250, 22000, "A heavy-lift tandem rotor helicopter used for troop and equipment transport."),
@@ -62,13 +62,13 @@ const MilitaryEntitiesData: MilitaryEntity[] = [
     new ArmoredFightingVehicle('Jagdpanzer', 'Jagdpanzer E-100', ArmoredFightingVehicleType.TankDestroyer, '10031000001204015800', Affiliation.Friend, 40, 80000, 'The Jagdpanzer E-100 is a German tank destroyer that was never produced in large numbers.'),
     new ArmoredFightingVehicle('SU-100', 'SU-100', ArmoredFightingVehicleType.TankDestroyer, '10061000001204015800', Affiliation.Hostile, 50, 32000, 'The SU-100 is a Soviet tank destroyer based on the T-34 chassis.'),
 
-    new Infantry('Green Berets', 'U.S. Army Special Forces', InfantryType.SpecialForces, '30031000001217000000', Affiliation.Friend, 50, 80, "Elite special forces unit of the U.S. Army, known for unconventional warfare and counterterrorism operations."),
+    new Infantry('Green-Berets', 'U.S. Army Special Forces', InfantryType.SpecialForces, '30031000001217000000', Affiliation.Friend, 50, 80, "Elite special forces unit of the U.S. Army, known for unconventional warfare and counterterrorism operations."),
     new Infantry('Spetsnaz', 'Russian Special Forces', InfantryType.SpecialForces, '30061000001217000000', Affiliation.Hostile, 50, 80, "Highly trained Russian special forces unit, specializing in covert and direct action missions."),
-    new Infantry('TOW Team', 'TOW Missile Anti-Tank Team', InfantryType.AntiTank, '30031000001204000000', Affiliation.Friend, 40, 100, "U.S. anti-tank team equipped with the TOW missile system, designed to destroy armored vehicles."),
-    new Infantry('Kornet Team', 'Kornet Anti-Tank Missile Team', InfantryType.AntiTank, '30061000001204000000', Affiliation.Hostile, 40, 100, "Russian anti-tank team equipped with Kornet missiles, effective against tanks and armored vehicles."),
-    new Infantry('82nd Airborne', '82nd Airborne Division', InfantryType.Airborne, '30031000001655000000', Affiliation.Friend, 55, 85, "A U.S. Army airborne infantry division known for rapid deployment and parachute assault capabilities."),
+    new Infantry('TOW-Team', 'TOW Missile Anti-Tank Team', InfantryType.AntiTank, '30031000001204000000', Affiliation.Friend, 40, 100, "U.S. anti-tank team equipped with the TOW missile system, designed to destroy armored vehicles."),
+    new Infantry('Kornet-Team', 'Kornet Anti-Tank Missile Team', InfantryType.AntiTank, '30061000001204000000', Affiliation.Hostile, 40, 100, "Russian anti-tank team equipped with Kornet missiles, effective against tanks and armored vehicles."),
+    new Infantry('82nd-Airborne', '82nd Airborne Division', InfantryType.Airborne, '30031000001655000000', Affiliation.Friend, 55, 85, "A U.S. Army airborne infantry division known for rapid deployment and parachute assault capabilities."),
     new Infantry('VDV', 'Russian VDV Paratroopers', InfantryType.Airborne, '30061000001655000000', Affiliation.Hostile, 55, 85, "Elite Russian airborne forces capable of rapid deployment and airborne operations."),
-    new Infantry('LRS Team', 'Long-Range Surveillance Team', InfantryType.Reconnaissance, '30031000001216000000', Affiliation.Friend, 40, 75, "U.S. reconnaissance team specialized in long-range surveillance and intelligence gathering."),
+    new Infantry('LRS-Team', 'Long-Range Surveillance Team', InfantryType.Reconnaissance, '30031000001216000000', Affiliation.Friend, 40, 75, "U.S. reconnaissance team specialized in long-range surveillance and intelligence gathering."),
     new Infantry('Spetsnaz Recon', 'Spetsnaz Recon Team', InfantryType.Reconnaissance, '30061000001216000000', Affiliation.Hostile, 40, 75, "Russian Spetsnaz team trained in reconnaissance and intelligence gathering missions."),
 ];
 

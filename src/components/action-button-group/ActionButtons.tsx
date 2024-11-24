@@ -127,7 +127,7 @@ const ActionButtons: React.FC = () => {
                         body: JSON.stringify(initializationMessage)
                     }
                 )
-                .then((response => response.json()))
+                .then((response => console.log(response.json())))
                 .then(responseData => console.log(responseData))
                 .catch(error => console.log(error));
 

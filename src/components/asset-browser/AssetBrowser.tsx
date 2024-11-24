@@ -58,9 +58,10 @@ const AssetBrowser: React.FC = () => {
         map.scrollWheelZoom.enable();
         map.dragging.enable();
         event.stopPropagation();
-    }
+    };
 
     const [lastSelectedAssetID, setLastSelectedItemID] = React.useState<string | null>(null);
+    
     return <div style={assetBrowserStyle} onMouseEnter={handleAssetBrowserEnter} onMouseLeave={handleAssetBrowserLeave}>
         <h2 style={assetBrowserHeaderStyle}>Assets</h2>
         <AffiliationSelection />

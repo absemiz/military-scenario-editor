@@ -63,7 +63,7 @@ abstract class MilitaryEntity implements IEntityPosition, IEntityPlatform, IMili
     public asJSON(): Object
     {
         return {
-            id: this.mID,
+            id: this.mapID(),
             latitude: this.mLatitude,
             longitude: this.mLongitude,
             altitude: this.mAltitude,
