@@ -1,5 +1,4 @@
 import { Affiliation } from "../types/entity";
-
 class MilitarySymbolCodeManipulator
 {
     private static instance: MilitarySymbolCodeManipulator;
@@ -19,7 +18,6 @@ class MilitarySymbolCodeManipulator
         codeArray[MilitarySymbolCodeManipulator.affiliationCodePosition] = newAffiliation.toString();
         return codeArray.join('');
     }
-
 }
 
 export default MilitarySymbolCodeManipulator;

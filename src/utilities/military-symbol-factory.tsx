@@ -48,6 +48,16 @@ class MilitarySymbolFactory
         return leafletIcon;
     }
 
+    public createLeafletIconWithHeading(symbolIdentificationCode: string, size: number = 48, heading: number = 0): Icon {
+        const leafletIconOptions: IconOptions = {
+            iconUrl: this.createSVGSymbolURLWithHeading(symbolIdentificationCode, size, heading),
+            iconSize: [size, size]
+        }
+
+        const leafletIcon: Icon = new Icon(leafletIconOptions);
+        return leafletIcon;
+    }
+
     public createReactComponent(symbolicIdentificationCode: string, size: number = 32): React.JSX.Element {
         return <div dangerouslySetInnerHTML={{__html: this.createSVGSymbol(symbolicIdentificationCode, size)}}></div>;
     }
@@ -58,8 +68,21 @@ class MilitarySymbolFactory
         return asSVG;
     }
 
+    private createSVGSymbolWithHeading(symbolIdentificationCode: string, size: number = 32, heading: number = 0): string {
+        const symbol: ms.Symbol = new ms.Symbol(symbolIdentificationCode, { size: size, direction: heading.toString() });
+        const asSVG: string = symbol.asSVG();
+        return asSVG;
+    }
+
     private createSVGSymbolURL(symbolicIdentificationCode: string, size: number = 32): string {
         const asSVG: string = this.createSVGSymbol(symbolicIdentificationCode, size);
+        const encodedSVG: string = btoa(asSVG);
+        const svgURL: string = `data:image/svg+xml;charset=utf-8;base64,${encodedSVG}`;
+        return svgURL;
+    }
+
+    private createSVGSymbolURLWithHeading(symbolicIdentificationCode: string, size: number = 32, heading: number = 0): string {
+        const asSVG: string = this.createSVGSymbolWithHeading(symbolicIdentificationCode, size, heading);
         const encodedSVG: string = btoa(asSVG);
         const svgURL: string = `data:image/svg+xml;charset=utf-8;base64,${encodedSVG}`;
         return svgURL;

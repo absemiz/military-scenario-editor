@@ -17,6 +17,8 @@ import { IMapRenderable } from "../../types/map";
 import MilitaryEntity from "../../models/military-entity";
 import Waypoint from "../../models/waypoint";
 
+import RequestManager from "../../utilities/request-manager";
+
 const actionButtonsContainerStyle: React.CSSProperties =  {
     position: "absolute",
     top: 0,
@@ -79,58 +81,58 @@ const ActionButtons: React.FC = () => {
         applicationState.setAddWaypointState({ active: false });
         applicationState.setDefinePathState({ active: false, targetPath: null });
         event.stopPropagation();
+    };
+
+    const handleSelect = () => {
+        applicationState.setSelectionEnabled(true);
+    };
+
+    const handleMove = () => {
+        applicationState.setMovingEnabled(true);
+    };
+
+    const handleAddWaypoint = () => {
+        applicationState.setAddWaypointState({ active: true });
+    };
+
+    const handleDefinePath = () => {
+        const targetPath: Path = new Path();
+        mapElements.addRenderable(targetPath);
+        applicationState.setDefinePathState({ active: true, targetPath: targetPath });
+    };
+
+    const handleRun = async () => {
+        const filterOf = (mapIDPreamble: string) => {
+            return function (mapRenderable: IMapRenderable) {
+                return mapRenderable.mapID().startsWith(mapIDPreamble);
+            };
+        }
+
+        const militaryEntities: MilitaryEntity[] = mapElements.renderables.filter(filterOf('milentity')) as MilitaryEntity[];
+        const paths: Path[] = mapElements.renderables.filter(filterOf('path')) as Path[];
+        const waypoints: Waypoint[] = mapElements.renderables.filter(filterOf('waypoint')) as Waypoint[];
+
+        const runRequest: Request = RequestManager.getInstance().getRunRequest(militaryEntities, paths, waypoints);
+
+        const runRespone: Response = await fetch(runRequest);
     }
 
     const handleMouseLeave = (event: React.MouseEvent<HTMLDivElement>) => {
         switch (selected) {
             case ActionButtonKind.Select:
-                applicationState.setSelectionEnabled(true);
+                handleSelect();
                 break;
             case ActionButtonKind.Move:
-                applicationState.setMovingEnabled(true);
+                handleMove();
                 break;
             case ActionButtonKind.AddWaypoint:
-                applicationState.setAddWaypointState({ active: true });
+                handleAddWaypoint();
                 break;
             case ActionButtonKind.DefinePath:
-                const targetPath: Path = new Path();
-                mapElements.addRenderable(targetPath);
-                applicationState.setDefinePathState({ active: true, targetPath: targetPath })
+                handleDefinePath();
                 break;
             case ActionButtonKind.Run:
-                const filterOf = (mapIDPreamble: string) => {
-                    return function (mapRenderable: IMapRenderable) {
-                        return mapRenderable.mapID().startsWith(mapIDPreamble);
-                    };
-                }
-
-                const militaryEntities: MilitaryEntity[] = mapElements.renderables.filter(filterOf('milentity')) as MilitaryEntity[];
-                const paths: Path[] = mapElements.renderables.filter(filterOf('path')) as Path[];
-                const waypoints: Waypoint[] = mapElements.renderables.filter(filterOf('waypoint')) as Waypoint[];
-
-                const initializationMessage = {
-                    entities: militaryEntities.map((value: MilitaryEntity) => value.asJSON()),
-                    paths: paths.map((value: Path) => value.asJSON()),
-                    waypoints: waypoints.map((value: Waypoint) => value.asJSON())
-                };
-
-                console.log(JSON.stringify(initializationMessage));
-
-                fetch(
-                    'http://localhost:8080/milsimapi',
-                    {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Message-Kind': 'scenario/initialize',
-                        },
-                        body: JSON.stringify(initializationMessage)
-                    }
-                )
-                .then((response => console.log(response.json())))
-                .then(responseData => console.log(responseData))
-                .catch(error => console.log(error));
-
+                handleRun();
                 break;
             default:
                 break;
@@ -138,8 +140,8 @@ const ActionButtons: React.FC = () => {
         event.stopPropagation();
     }
 
-    useEffect(() => { if (selected === ActionButtonKind.AddWaypoint && !applicationState.addWaypointState.active) setSelected(null); }, [applicationState.addWaypointState.active]);
-    useEffect(() => { if (selected === ActionButtonKind.DefinePath && !applicationState.definePathState.active) setSelected(null); }, [applicationState.definePathState.active]);
+    useEffect(() => { if (selected === ActionButtonKind.AddWaypoint && !applicationState.addWaypointState.active) setSelected(null); }, [applicationState.addWaypointState.active, selected]);
+    useEffect(() => { if (selected === ActionButtonKind.DefinePath && !applicationState.definePathState.active) setSelected(null); }, [applicationState.definePathState.active, selected]);
 
     return <ToggleButtonGroup exclusive={true} value={selected} onChange={handleChange} style={actionButtonsContainerStyle} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
         <SelectButton style={selected === ActionButtonKind.Select ? selectedActionButtonStyle : actionButtonStyle}/>
