@@ -43,7 +43,7 @@ class ArmoredFightingVehicle extends MilitaryEntity
     public getFuel?: (() => number) | undefined = () => { return this.mFuel };
     public setFuel?: ((newFuel: number) => void) | undefined = (newFuel: number) => { return this.mFuel = newFuel; };
 
-    public getTypeName?: (() => string) | undefined = () => { return "Armored Fighting Vehicle"; }
+    public getTypeName?: (() => string) | undefined = () => { return "ArmoredVehicle"; }
     public getSubTypeName?: (() => string) | undefined = () => { return this.subTypeName(); }
 
     public subTypeName(): string {

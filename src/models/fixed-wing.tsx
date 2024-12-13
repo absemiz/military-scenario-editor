@@ -31,7 +31,7 @@ class FixedWing extends MilitaryEntity
     public getFuel?: (() => number) | undefined = () => { return this.mFuel };
     public setFuel?: ((newFuel: number) => void) | undefined = (newFuel: number) => { return this.mFuel = newFuel; };
 
-    public getTypeName?: (() => string) | undefined = () => { return "Fixed Wing"; }
+    public getTypeName?: (() => string) | undefined = () => { return "FixedWing"; }
     public getSubTypeName?: (() => string) | undefined = () => { return this.subTypeName(); }
 
     public clone(): MilitaryEntity {

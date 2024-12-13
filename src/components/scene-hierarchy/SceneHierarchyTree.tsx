@@ -17,7 +17,7 @@ interface SceneHierarchyTreeProperties {
 
 const sceneHierarchyTreeStyle: React.CSSProperties = {
     width: '100%',
-    height: '120px',
+    height: '160px',
     overflowY: 'auto',
     backgroundColor: '#1E1E1E',
     padding: '16px',
@@ -26,7 +26,9 @@ const sceneHierarchyTreeStyle: React.CSSProperties = {
 
 const defaultExpandedItemIDs: Array<string> = [
     'blueforce-root',
-    'redforce-root'
+    'redforce-root',
+    'path-root',
+    'waypoint-root'
 ]
 
 const SceneHierarchyTree: React.FC<SceneHierarchyTreeProperties> = (properties: SceneHierarchyTreeProperties) => {
@@ -34,7 +36,7 @@ const SceneHierarchyTree: React.FC<SceneHierarchyTreeProperties> = (properties: 
 
     const mapElementsFilterByAffiliation: (affiliation: Affiliation) => ISceneHierarchyTreeItem[] = (affiliation: Affiliation) => {
         return mapElements.renderables
-            .filter((value: IMapRenderable): value is MilitaryEntity => { return (value as MilitaryEntity).getAffiliation && (value as MilitaryEntity).getAffiliation()  === affiliation })
+            .filter((value: IMapRenderable): value is MilitaryEntity => { return (value as MilitaryEntity).getAffiliation && (value as MilitaryEntity).getAffiliation() === affiliation })
             .map((value: IMapRenderable) => {
                 const militaryEntity = value as MilitaryEntity;
                 return {
@@ -45,6 +47,9 @@ const SceneHierarchyTree: React.FC<SceneHierarchyTreeProperties> = (properties: 
                 } as ISceneHierarchyTreeItem;
             });
     };
+
+    const mapElementsPaths: ISceneHierarchyTreeItem[] = mapElements.renderables.filter((value: IMapRenderable) => { return value.mapID().startsWith('path'); });
+    const mapElementsWaypoints: ISceneHierarchyTreeItem[] = mapElements.renderables.filter((value: IMapRenderable) => { return value.mapID().startsWith('waypoint'); });
 
     const hierarchyTreeFactory: (() => ISceneHierarchyTreeItem[]) = () => {
         return [
@@ -59,14 +64,26 @@ const SceneHierarchyTree: React.FC<SceneHierarchyTreeProperties> = (properties: 
                 getHierarchyTreeLabel: () => 'Redforce',
                 getHierarchyTreeIcon: () => <ExpandMore />,
                 getHierarchyTreeChildren: () => mapElementsFilterByAffiliation(Affiliation.Hostile)
-            }
+            },
+            {
+                getHierarchyTreeItemID: () => 'path-root',
+                getHierarchyTreeLabel: () => 'Paths',
+                getHierarchyTreeIcon: () => <ExpandMore />,
+                getHierarchyTreeChildren: () => mapElementsPaths
+            },
+            {
+                getHierarchyTreeItemID: () => 'waypoint-root',
+                getHierarchyTreeLabel: () => 'Waypoints',
+                getHierarchyTreeIcon: () => <ExpandMore />,
+                getHierarchyTreeChildren: () => mapElementsWaypoints
+            },
         ];
     };
 
     const hierarchyTree: ISceneHierarchyTreeItem[] = useMemo(hierarchyTreeFactory, [mapElements.renderables]);
 
     const handleClick: (event: React.MouseEvent, itemID: string | null) => void = (_event: React.MouseEvent, itemID: string | null) => {
-        if (!defaultExpandedItemIDs.includes(itemID ? itemID : "")) properties.setLastSelectedItemID(itemID);
+        if (!defaultExpandedItemIDs.includes(itemID ? itemID : "") && !itemID?.startsWith("path") && !itemID?.startsWith("waypoint")) properties.setLastSelectedItemID(itemID);
     }
 
     return <Box style={sceneHierarchyTreeStyle}>

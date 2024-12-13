@@ -5,6 +5,8 @@ import Path from "../models/path";
 
 export enum ApplicationPhase {
     ScenarioInitialization,
+    BehaviourEditorOpen,
+    ScenarioInitializationRequestProcessing,
     ScenarioRun,
 };
 

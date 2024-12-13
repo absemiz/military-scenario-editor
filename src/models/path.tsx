@@ -3,8 +3,11 @@ import React from "react";
 import { CircleMarker, Polyline, Tooltip } from "react-leaflet";
 
 import { IMapRenderable } from "../types/map";
+import { ISceneHierarchyTreeItem } from "../types/scene-hierarchy";
+import { Timeline } from "@mui/icons-material";
+import SvgIcon from "@mui/material/SvgIcon";
 
-class Path implements IMapRenderable {
+class Path implements IMapRenderable, ISceneHierarchyTreeItem {
     private static instanceCounter: number = 0;
 
     private mID: string;
@@ -15,7 +18,12 @@ class Path implements IMapRenderable {
         Path.instanceCounter++;
     }
 
-    public asJSON(): Object
+    getHierarchyTreeItemID: () => string = () => { return this.mapID(); };
+    getHierarchyTreeLabel: () => string = () => { return this.mapID().toUpperCase(); };
+    getHierarchyTreeChildren: () => ISceneHierarchyTreeItem[] = () => { return []; };
+    getHierarchyTreeIcon: () => React.JSX.Element = () => { return <SvgIcon component={Timeline} />; };
+
+    public asJSON(): object
     {
         return {
             id: this.mID,
@@ -27,7 +35,7 @@ class Path implements IMapRenderable {
         this.mPoints.push(point);
     }
 
-    public mapID(_index?: number): string {
+    public mapID(): string {
         return this.mID;
     }
 
@@ -42,7 +50,7 @@ class Path implements IMapRenderable {
 
     public mapComponent(): React.JSX.Element {
         return <React.Fragment>
-            { this.mPoints.map((point: [number, number], index: number) => { return <CircleMarker center={point} radius={8} key={index}><Tooltip direction="bottom" permanent={true}>{ index + 1 }</Tooltip></CircleMarker>; }) }
+            { this.mPoints.map((point: [number, number], index: number) => { return <CircleMarker center={point} radius={8} key={index}><Tooltip direction="bottom" permanent={true}>{ `${this.getHierarchyTreeLabel()}|${index + 1}` }</Tooltip></CircleMarker>; }) }
             { this.mPoints.length >= 2 && <Polyline positions={[this.mPoints]} /> }
         </React.Fragment>
     }

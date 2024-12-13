@@ -18,6 +18,7 @@ import MilitaryEntity from "../../models/military-entity";
 import Waypoint from "../../models/waypoint";
 
 import RequestManager from "../../utilities/request-manager";
+import { ApplicationPhase } from "../../contexts/ApplicationStateContext";
 
 const actionButtonsContainerStyle: React.CSSProperties =  {
     position: "absolute",
@@ -114,7 +115,19 @@ const ActionButtons: React.FC = () => {
 
         const runRequest: Request = RequestManager.getInstance().getRunRequest(militaryEntities, paths, waypoints);
 
+        applicationState.setApplicationPhase(ApplicationPhase.ScenarioInitializationRequestProcessing);
+
         const runRespone: Response = await fetch(runRequest);
+
+        if (runRespone.ok)
+        {
+            console.log(runRespone.json());
+            applicationState.setApplicationPhase(ApplicationPhase.ScenarioRun);
+        }
+        else
+        {
+            console.log("Error occured.");
+        }
     }
 
     const handleMouseLeave = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -140,8 +153,8 @@ const ActionButtons: React.FC = () => {
         event.stopPropagation();
     }
 
-    useEffect(() => { if (selected === ActionButtonKind.AddWaypoint && !applicationState.addWaypointState.active) setSelected(null); }, [applicationState.addWaypointState.active, selected]);
-    useEffect(() => { if (selected === ActionButtonKind.DefinePath && !applicationState.definePathState.active) setSelected(null); }, [applicationState.definePathState.active, selected]);
+    useEffect(() => { if (selected === ActionButtonKind.AddWaypoint && !applicationState.addWaypointState.active) setSelected(null); }, [applicationState.addWaypointState.active]);
+    useEffect(() => { if (selected === ActionButtonKind.DefinePath && !applicationState.definePathState.active) setSelected(null); }, [applicationState.definePathState.active]);
 
     return <ToggleButtonGroup exclusive={true} value={selected} onChange={handleChange} style={actionButtonsContainerStyle} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
         <SelectButton style={selected === ActionButtonKind.Select ? selectedActionButtonStyle : actionButtonStyle}/>

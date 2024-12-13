@@ -3,6 +3,8 @@ import React from "react";
 import SceneHierarchyTree from "./SceneHierarchyTree";
 
 import SelectedEntityAttributes from "./SelectedEntityAttributes";
+import BehaviourEditorButton from "./BehaviourEditorButton";
+
 import { useApplicationStateContext } from "../../hooks/useApplicationStateContext";
 import { useMap } from "react-leaflet";
 
@@ -39,12 +41,12 @@ const SceneHierarchy: React.FC = () => {
     const applicationContext = useApplicationStateContext();
     const map = useMap();
 
-    const handleMouseEnter: React.MouseEventHandler<HTMLDivElement> = (_event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const handleMouseEnter: React.MouseEventHandler<HTMLDivElement> = () => {
         map.scrollWheelZoom.disable();
         map.dragging.disable();
     }
 
-    const handleMouseLeave: React.MouseEventHandler<HTMLDivElement> = (_event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const handleMouseLeave: React.MouseEventHandler<HTMLDivElement> = () => {
         map.scrollWheelZoom.enable();
         map.dragging.enable();
     }
@@ -52,7 +54,8 @@ const SceneHierarchy: React.FC = () => {
     return <div style={sceneHierarchyContainerStyle} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
         <h2 style={sceneHierarchyHeaderStyle}>Scene Hierarchy</h2>
         <SceneHierarchyTree setLastSelectedItemID={applicationContext.setEntityIDToDisplayAttributes} />
-        { applicationContext.entityIDToDisplayAttributes && <SelectedEntityAttributes /> }
+        {applicationContext.entityIDToDisplayAttributes && <SelectedEntityAttributes />}
+        {applicationContext.entityIDToDisplayAttributes && <BehaviourEditorButton />}
     </div>
 }
 

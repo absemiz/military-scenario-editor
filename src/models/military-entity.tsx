@@ -60,7 +60,7 @@ abstract class MilitaryEntity implements IEntityPosition, IEntityPlatform, IMili
         MilitaryEntity.callsignCounter++;
     }
 
-    public asJSON(): Object
+    public asJSON(): object
     {
         return {
             id: this.mapID(),
@@ -71,7 +71,8 @@ abstract class MilitaryEntity implements IEntityPosition, IEntityPlatform, IMili
             pitch: this.mPitch,
             roll: this.mRoll,
             fuel: this.mFuel,
-            affiliation: this.mAffiliation
+            affiliation: this.mAffiliation,
+            type: this.getTypeName ? this.getTypeName() : "None"
         };
     }
 

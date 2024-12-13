@@ -1,12 +1,14 @@
 import React from "react";
 import { IMapRenderable } from "../types/map";
 
-import { LocationOnOutlined } from "@mui/icons-material";
+import { LocationOnOutlined, Place } from "@mui/icons-material";
 
 import WaypointView from "../components/waypoint-view/WaypointView";
 import { IAssetTreeItem } from "../types/asset-browser";
+import { ISceneHierarchyTreeItem } from "../types/scene-hierarchy";
+import { SvgIcon } from "@mui/material";
 
-class Waypoint implements IMapRenderable, IAssetTreeItem {
+class Waypoint implements IMapRenderable, IAssetTreeItem, ISceneHierarchyTreeItem {
     private static instanceCounter: number = 0;
 
     private mID: string;
@@ -24,7 +26,12 @@ class Waypoint implements IMapRenderable, IAssetTreeItem {
         Waypoint.instanceCounter++;
     }
 
-    public asJSON(): Object
+    getHierarchyTreeItemID: () => string = () => { return this.mapID(); };
+    getHierarchyTreeLabel: () => string = () => { return this.mapID().toUpperCase(); };
+    getHierarchyTreeChildren: () => ISceneHierarchyTreeItem[] = () => { return []; };
+    getHierarchyTreeIcon: () => React.JSX.Element = () => { return <SvgIcon component={Place} />; };
+
+    public asJSON(): object
     {
         return {
             id: this.mID,
@@ -61,7 +68,7 @@ class Waypoint implements IMapRenderable, IAssetTreeItem {
         this.mPosition = newPosition;
     }
 
-    public mapID(_index: number | undefined): string 
+    public mapID(): string 
     {
         return this.mID;
     }

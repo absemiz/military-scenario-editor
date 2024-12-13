@@ -191,7 +191,10 @@ const evaluatePlatformDataToDisplay: (entity: MilitaryEntity) => Array<EntryProp
                     const inputFuel: number = Number.parseFloat(newFuel);
                     if (!Number.isNaN(inputFuel) && 0.0 <= inputFuel && inputFuel <= 100.0)
                     {
-                        entity.setFuel && entity.setFuel(Number.parseFloat(newFuel));
+                        if (entity.setFuel)
+                        {
+                            entity.setFuel(Number.parseFloat(newFuel))
+                        };
                     }
                 }
             }

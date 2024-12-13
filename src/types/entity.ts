@@ -29,11 +29,6 @@ export interface IMarkerEntity extends IEntity
     icon: Icon; 
 }
 
-export interface IFixedWing extends IMilitaryEntity 
-{
-
-}
-
 export interface IEntityPosition 
 {
     getLatitude: () => number;

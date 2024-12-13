@@ -29,7 +29,7 @@ class RotaryWing extends MilitaryEntity {
     public getFuel?: (() => number) | undefined = () => { return this.mFuel };
     public setFuel?: ((newFuel: number) => void) | undefined = (newFuel: number) => { return this.mFuel = newFuel; };
 
-    public getTypeName?: (() => string) | undefined = () => { return "Rotary Wing"; }
+    public getTypeName?: (() => string) | undefined = () => { return "RotaryWing"; }
     public getSubTypeName?: (() => string) | undefined = () => { return this.subTypeName(); }
 
     public clone(): MilitaryEntity {
