@@ -69,7 +69,7 @@ const MilitaryEntitiesData: MilitaryEntity[] = [
     new Infantry('82nd-Airborne', '82nd Airborne Division', InfantryType.Airborne, '30031000001655000000', Affiliation.Friend, 55, 85, "A U.S. Army airborne infantry division known for rapid deployment and parachute assault capabilities."),
     new Infantry('VDV', 'Russian VDV Paratroopers', InfantryType.Airborne, '30061000001655000000', Affiliation.Hostile, 55, 85, "Elite Russian airborne forces capable of rapid deployment and airborne operations."),
     new Infantry('LRS-Team', 'Long-Range Surveillance Team', InfantryType.Reconnaissance, '30031000001216000000', Affiliation.Friend, 40, 75, "U.S. reconnaissance team specialized in long-range surveillance and intelligence gathering."),
-    new Infantry('Spetsnaz Recon', 'Spetsnaz Recon Team', InfantryType.Reconnaissance, '30061000001216000000', Affiliation.Hostile, 40, 75, "Russian Spetsnaz team trained in reconnaissance and intelligence gathering missions."),
+    new Infantry('Spetsnaz-Recon', 'Spetsnaz Recon Team', InfantryType.Reconnaissance, '30061000001216000000', Affiliation.Hostile, 40, 75, "Russian Spetsnaz team trained in reconnaissance and intelligence gathering missions."),
 ];
 
 class MilitaryEntitiesDataService

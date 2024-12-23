@@ -1,6 +1,6 @@
 import React from "react";
 
-import { IEntityPosition, IEntityPlatform, IMilitaryEntity, Affiliation } from "../types/entity";
+import { IEntityPosition, IEntityPlatform, IMilitaryEntity, Affiliation, EntityMessageObject } from "../types/entity";
 import { IMapRenderable } from "../types/map";
 import { IAssetTreeItem } from "../types/asset-browser";
 
@@ -21,12 +21,15 @@ abstract class MilitaryEntity implements IEntityPosition, IEntityPlatform, IMili
     protected mLongitude: number = 0;
     protected mAltitude: number = 0;
     protected mHeading: number = 0;
-    protected mPitch: number = 0
+    protected mPitch: number = 0;
     protected mRoll: number = 0;
 
     protected mMaxSpeed: number = 0;
     protected mFuel: number = 100;
     protected mWeight: number = 0;
+
+    protected mAttachedGoToTasks: string[] = [];
+    protected mAttachedFollowPathTasks: string[] = [];
     
     protected mAffiliation: Affiliation;
     protected mSymbolicIdentificationCode: string;
@@ -60,7 +63,7 @@ abstract class MilitaryEntity implements IEntityPosition, IEntityPlatform, IMili
         MilitaryEntity.callsignCounter++;
     }
 
-    public asJSON(): object
+    public asJSON(): EntityMessageObject
     {
         return {
             id: this.mapID(),
@@ -72,7 +75,8 @@ abstract class MilitaryEntity implements IEntityPosition, IEntityPlatform, IMili
             roll: this.mRoll,
             fuel: this.mFuel,
             affiliation: this.mAffiliation,
-            type: this.getTypeName ? this.getTypeName() : "None"
+            type: this.getTypeName ? this.getTypeName() : "None",
+            attachedWaypoints: this.mAttachedGoToTasks
         };
     }
 
@@ -181,6 +185,14 @@ abstract class MilitaryEntity implements IEntityPosition, IEntityPlatform, IMili
     public getAssetTreeChildren(): IAssetTreeItem[]
     {
         return [];
+    }
+
+    public addGoToTask(waypointID: string): void {
+        this.mAttachedGoToTasks.push(waypointID);
+    }
+
+    public addFollowPathTash(pathID: string): void {
+        this.mAttachedFollowPathTasks.push(pathID);
     }
 
     public getDescription?: (() => string) | undefined = () => { return this.mDescription ?? 'No description available'};

@@ -7,7 +7,9 @@ class RequestManager
 {
     private static instance: RequestManager;
 
-    private static simulationAPIURL = 'http://localhost:8080/milsimapi';
+    private static readonly simulationInitializeAPIURL = 'http://localhost:8080/milsimapi/initialize';
+    private static readonly simulationRuntimeAPIURL = 'http://localhost:8080/milsimapi/runtime';
+
 
     public static getInstance(): RequestManager {
 
@@ -21,6 +23,17 @@ class RequestManager
 
     private constructor() {
 
+    }
+
+    public getUpdateStateRequest(): Request {
+
+        const requestMethod: string = 'GET';
+        const requestHeaders: HeadersInit = {
+            'Content-Type': 'application/json',
+            'Message-Kind': 'scenario/update-state',
+        }
+
+        return new Request(RequestManager.simulationRuntimeAPIURL, { method: requestMethod, headers: requestHeaders});
     }
 
     public getRunRequest(militaryEntities: MilitaryEntity[], paths: Path[], waypoints: Waypoint[]): Request {
@@ -38,7 +51,7 @@ class RequestManager
         };
         const requestBody: string = JSON.stringify(initializationMessage);
 
-        return new Request(RequestManager.simulationAPIURL, { method: requestMethod, headers: requestHeaders, body: requestBody });
+        return new Request(RequestManager.simulationInitializeAPIURL, { method: requestMethod, headers: requestHeaders, body: requestBody });
     }
 }
 

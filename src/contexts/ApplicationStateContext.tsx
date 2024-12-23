@@ -19,6 +19,13 @@ export interface DefinePathState {
     targetPath: Path | null;
 }
 
+export interface GoToPointTask {
+    attachedEntityID: string,
+    latitude: number,
+    longitude: number,
+    altitude: number
+};
+
 export interface ApplicationState {
     phase: ApplicationPhase;
     selectedAffiliation: Affiliation;
@@ -37,6 +44,7 @@ export interface ApplicationState {
     setDefinePathState: (newState: DefinePathState) => void;
     setDisplayRepositioningInfo: (newState: boolean) => void;
     setEntityIDToDisplayAttributes: (newState: string | null) => void;
+
 };
 
 export const ApplicationStateContext: React.Context<ApplicationState | undefined> = createContext<ApplicationState | undefined>(undefined);
@@ -68,7 +76,7 @@ export const ApplicationStateProvider: React.FC<{children: React.ReactNode}> = (
             setAddWaypointState: setAddWaypointState,
             setDefinePathState: setDefinePathState,
             setEntityIDToDisplayAttributes: setEntityIDToDisplayAttributes,
-            setDisplayRepositioningInfo: setDisplayRepositioningInfo
+            setDisplayRepositioningInfo: setDisplayRepositioningInfo,
         }}>
         { children }
     </ApplicationStateContext.Provider>

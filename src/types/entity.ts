@@ -26,7 +26,21 @@ export interface IMilitaryEntity extends IEntity
 
 export interface IMarkerEntity extends IEntity 
 { 
-    icon: Icon; 
+    icon: Icon;
+}
+
+export type EntityMessageObject = {
+    id: string,
+    latitude: number,
+    longitude: number,
+    altitude: number,
+    heading: number,
+    pitch: number,
+    roll: number,
+    fuel: number,
+    affiliation: number,
+    type: string,
+    attachedWaypoints: string[],
 }
 
 export interface IEntityPosition 

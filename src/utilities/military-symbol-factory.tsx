@@ -48,7 +48,7 @@ class MilitarySymbolFactory
         return leafletIcon;
     }
 
-    public createLeafletIconWithHeading(symbolIdentificationCode: string, size: number = 48, heading: number = 0): Icon {
+    public createLeafletIconWithHeading(symbolIdentificationCode: string, size: number = 64, heading: number = 0): Icon {
         const leafletIconOptions: IconOptions = {
             iconUrl: this.createSVGSymbolURLWithHeading(symbolIdentificationCode, size, heading),
             iconSize: [size, size]

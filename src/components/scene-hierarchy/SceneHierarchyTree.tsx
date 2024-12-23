@@ -48,8 +48,13 @@ const SceneHierarchyTree: React.FC<SceneHierarchyTreeProperties> = (properties: 
             });
     };
 
-    const mapElementsPaths: ISceneHierarchyTreeItem[] = mapElements.renderables.filter((value: IMapRenderable) => { return value.mapID().startsWith('path'); });
-    const mapElementsWaypoints: ISceneHierarchyTreeItem[] = mapElements.renderables.filter((value: IMapRenderable) => { return value.mapID().startsWith('waypoint'); });
+    const mapElementsPaths: ISceneHierarchyTreeItem[] = mapElements.renderables
+    .filter((value: IMapRenderable) => value.mapID().startsWith('path'))
+    .map((value) => value as unknown as ISceneHierarchyTreeItem);
+  
+    const mapElementsWaypoints: ISceneHierarchyTreeItem[] = mapElements.renderables
+    .filter((value: IMapRenderable) => value.mapID().startsWith('waypoint'))
+    .map((value) => value as unknown as ISceneHierarchyTreeItem);
 
     const hierarchyTreeFactory: (() => ISceneHierarchyTreeItem[]) = () => {
         return [

@@ -35,7 +35,7 @@ class Waypoint implements IMapRenderable, IAssetTreeItem, ISceneHierarchyTreeIte
     {
         return {
             id: this.mID,
-            position: this.mPosition
+            position: [...this.mPosition, 0]
         };
     }
 

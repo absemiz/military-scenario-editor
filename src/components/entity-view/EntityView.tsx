@@ -1,6 +1,6 @@
 import React, { useRef, useMemo } from "react";
 
-import { DragEndEvent, LeafletEventHandlerFnMap, Marker as LeafletMarker, LeafletMouseEvent } from "leaflet";
+import { DragEndEvent, LeafletEventHandlerFnMap, Marker as LeafletMarker, LeafletMouseEvent, Direction, PointExpression } from "leaflet";
 import { Marker, Tooltip } from "react-leaflet";
 
 import MilitaryEntity from "../../models/military-entity";
@@ -41,13 +41,29 @@ const EntityView: React.FC<EntityViewProperties> = (properties: EntityViewProper
 
     const eventHandlers = useMemo(eventHandlersFactory, []);
 
-    return <Marker 
+    let tooltipOffset: PointExpression;
+    let tooltipDirection: Direction;
+    if (properties.entity.getTypeName !== undefined)
+    {
+        const typeName: string = properties.entity.getTypeName();
+        const groundEntity: boolean = (typeName === "Infantry" || typeName === "ArmoredVehicle");
+
+        tooltipDirection = groundEntity ? "top" : "bottom";
+        tooltipOffset = groundEntity ? [0, -16] : [0, 8];
+    }
+    else
+    {
+        tooltipDirection = "bottom";
+        tooltipOffset = [0, 0];
+    }
+    
+    return <Marker
     eventHandlers={eventHandlers} 
     draggable={applicationState.movingEnabled} 
     ref={markerReference} 
     position={properties.entity.mapPosition()} 
-    icon={MilitarySymbolFactory.getInstance().createLeafletIcon(properties.entity.getSymbolicIdentificationCode())}>
-        <Tooltip direction="bottom" permanent={true} offset={[0, 8]}>
+    icon={MilitarySymbolFactory.getInstance().createLeafletIconWithHeading(properties.entity.getSymbolicIdentificationCode(), 64, properties.entity.getHeading())}>
+        <Tooltip direction={tooltipDirection} permanent={true} offset={tooltipOffset}>
             { properties.entity.getEntityCallsign() }
         </Tooltip>
     </Marker>
